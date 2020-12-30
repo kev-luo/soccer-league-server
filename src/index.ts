@@ -9,6 +9,7 @@ import { League } from "./entities/League";
 import { Team } from "./entities/Team";
 import { Player } from "./entities/Player";
 import { HelloResolver } from "./resolvers/hello";
+import { LeagueResolver } from "./resolvers/league";
 
 const main = async () => {
 
@@ -24,7 +25,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver],
+      resolvers: [HelloResolver, LeagueResolver],
       validate: false,
     })
   })

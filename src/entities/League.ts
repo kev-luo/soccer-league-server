@@ -1,10 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+import { ObjectType, Field } from "type-graphql";
 
+@ObjectType()
 @Entity()
-export class League {
+export class League extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
+  @Field()
   @Column()
-  name: string;
+  name!: string;
 }
