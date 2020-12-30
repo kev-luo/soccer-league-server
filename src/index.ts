@@ -7,6 +7,7 @@ import express from "express";
 
 import { League } from "./entities/League";
 import { Team } from "./entities/Team";
+import { Player } from "./entities/Player";
 import { HelloResolver } from "./resolvers/hello";
 
 const main = async () => {
@@ -16,7 +17,7 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     logging: true,
     synchronize: true,
-    entities: [League, Team]
+    entities: [League, Team, Player]
   })
 
   const app = express();
