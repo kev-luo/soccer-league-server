@@ -6,9 +6,9 @@ import { ObjectType, Field } from "type-graphql";
 export class League extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Field()
   @Column()
-  name!: string;
+  name: string;
 }
