@@ -1,13 +1,13 @@
 import { createConnection } from "typeorm"
 
+import "reflect-metadata";
+import "dotenv-safe/config";
 import { League } from "./entities/League";
 
 const main = async () => {
   await createConnection({
     type: "postgres",
-    database: "rec_league",
-    username: "postgres",
-    password: "",
+    url: process.env.DATABASE_URL,    
     logging: true,
     synchronize: true,
     entities: [League]
