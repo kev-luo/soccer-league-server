@@ -11,6 +11,8 @@ export class TeamInput {
   @Field()
   name: string;
   @Field()
+  email: string;
+  @Field()
   primaryColor: string;
   @Field()
   secondaryColor: string;
@@ -64,13 +66,14 @@ export class TeamResolver {
         .into(Team)
         .values({
           name: input.name,
+          email: input.email,
           primaryColor: input.primaryColor,
           secondaryColor: input.secondaryColor,
           password: hashedPassword
         })
         .returning("*")
         .execute();
-        
+
       team = result.raw[0]
     } catch (err) {
       if (err.code === "23505") {
@@ -85,6 +88,48 @@ export class TeamResolver {
       }
     }
 
+    ctx.req.session.teamId = team.id;
+
+    return {
+      team
+    }
+  }
+
+  @Mutation(() => UserResponse)
+  async login(
+    @Arg("nameOrEmail") nameOrEmail: string,
+    @Arg("password") password: string,
+    @Ctx() ctx: MyContext
+  ): Promise<UserResponse> {
+    const team = await Team.findOne(
+      nameOrEmail.includes("@") ?
+        { where: { email: nameOrEmail } }
+        : { where: { name: nameOrEmail } }
+    )
+
+    if(!team) {
+      return {
+        errors: [
+          {
+            field: "nameOrEmail", 
+            message: "We couldn't find that team"
+          }
+        ]
+      }
+    }
+
+    const validatePw = await argon2.verify(team.password, password);
+    if(!validatePw) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "Password is incorrect"
+          }
+        ]
+      }
+    }
+    
     ctx.req.session.teamId = team.id;
 
     return {
