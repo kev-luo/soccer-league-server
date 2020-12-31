@@ -58,12 +58,19 @@ export class TeamResolver {
     let team;
 
     try {
-      const result = await getConnection().createQueryBuilder().insert().into(Team).values({
-        name: input.name,
-        primaryColor: input.primaryColor,
-        secondaryColor: input.secondaryColor,
-        password: hashedPassword
-      }).returning("*").execute();
+      const result = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Team)
+        .values({
+          name: input.name,
+          primaryColor: input.primaryColor,
+          secondaryColor: input.secondaryColor,
+          password: hashedPassword
+        })
+        .returning("*")
+        .execute();
+        
       team = result.raw[0]
     } catch (err) {
       if (err.code === "23505") {

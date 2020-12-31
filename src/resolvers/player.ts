@@ -1,5 +1,7 @@
-import { Resolver, Query, Mutation, Arg, InputType, Field } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx } from "type-graphql";
+
 import { Player } from "../entities/Player";
+import { MyContext } from "src/types";
 
 @InputType()
 class PlayerInput {
@@ -22,8 +24,9 @@ export class PlayerResolver {
 
   @Mutation(() => Player)
   createPlayer(
-    @Arg("playerInput") playerInput: PlayerInput
+    @Arg("playerInput") playerInput: PlayerInput,
+    @Ctx() ctx: MyContext
   ): Promise<Player> {
-    return Player.create({ ...playerInput }).save();
+    return Player.create({ ...playerInput, teamId: ctx.req.session.teamId }).save();
   }
 }
