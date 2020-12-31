@@ -12,6 +12,7 @@ import { HelloResolver } from "./resolvers/hello";
 import { LeagueResolver } from "./resolvers/league";
 import { TeamResolver } from "./resolvers/team";
 import { PlayerResolver } from "./resolvers/player";
+import { MyContext } from "./types";
 
 const main = async () => {
 
@@ -29,7 +30,8 @@ const main = async () => {
     schema: await buildSchema({
       resolvers: [HelloResolver, LeagueResolver, TeamResolver, PlayerResolver],
       validate: false,
-    })
+    }),
+    context: ({ req, res }): MyContext =>({ req, res })
   })
 
   apolloServer.applyMiddleware({ app });
