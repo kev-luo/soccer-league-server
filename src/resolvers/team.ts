@@ -5,6 +5,7 @@ import { getConnection } from "typeorm";
 import { MyContext } from "src/types";
 import { Team } from "../entities/Team";
 import { validateRegister } from "../utils/validateRegister";
+import { COOKIE_NAME } from "../constants";
 
 @InputType()
 export class TeamInput {
@@ -135,5 +136,22 @@ export class TeamResolver {
     return {
       team
     }
+  }
+
+  @Mutation(() => Boolean)
+  logout(
+    @Ctx() ctx: MyContext
+  ) {
+    return new Promise((res) => 
+      ctx.req.session.destroy((err) => {
+        ctx.res.clearCookie(COOKIE_NAME);
+        if(err) {
+          console.log(err);
+          res(false);
+          return
+        }
+        res(true);
+      })
+    )
   }
 }
