@@ -40,6 +40,14 @@ class UserResponse {
 
 @Resolver()
 export class TeamResolver {
+  @Query(() => Team, { nullable: true })
+  me(@Ctx() ctx: MyContext) {
+    if(!ctx.req.session.teamId) {
+      return null;
+    }
+    return Team.findOne(ctx.req.session.teamId);
+  }
+
   @Query(() => [Team])
   async teams(): Promise<Team[]> {
     return Team.find();
