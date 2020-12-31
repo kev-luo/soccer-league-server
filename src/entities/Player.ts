@@ -20,7 +20,7 @@ export class Player extends BaseEntity {
   @Column()
   age: number;
 
-  @Field()
-  @Column()
-  captain: boolean;
+  @Field({ nullable: true })
+  @Column({ type: "bool", default: false })
+  captain?: boolean;
 }
