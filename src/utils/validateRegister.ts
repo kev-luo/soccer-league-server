@@ -2,6 +2,16 @@ import { TeamInput } from "../resolvers/team";
 
 export const validateRegister = (input: TeamInput) => {
 
+  if (!input.email.includes("@")) {
+    return [
+      { 
+        field: "email", 
+        message: "Invalid email." 
+      }
+    ]
+
+  }
+
   if (input.name.length <= 2) {
     return [
       {
