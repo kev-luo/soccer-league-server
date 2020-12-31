@@ -21,6 +21,9 @@ export class Team extends BaseEntity {
   @Column()
   secondaryColor: string;
 
+  @Column()
+  password: string;
+
   @OneToMany(() => Player, player => player.team)
   players: Player[];
 }
