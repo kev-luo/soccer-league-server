@@ -1,11 +1,14 @@
-import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx, UseMiddleware } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx, UseMiddleware, ObjectType } from "type-graphql";
 
 import { Player } from "../entities/Player";
 import { MyContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
+import { FieldError } from "./FieldError";
+import { validatePlayer } from "../utils/validatePlayer";
+import { getConnection } from "typeorm";
 
 @InputType()
-class PlayerInput {
+export class PlayerInput {
   @Field()
   firstName: string
   @Field()
@@ -16,6 +19,15 @@ class PlayerInput {
   captain: boolean
 }
 
+@ObjectType()
+class PlayerResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[]
+
+  @Field(() => Player, { nullable: true })
+  player?: Player
+}
+
 @Resolver()
 export class PlayerResolver {
   @Query(() => [Player])
@@ -23,12 +35,37 @@ export class PlayerResolver {
     return Player.find();
   }
 
-  @Mutation(() => Player)
+  @Mutation(() => PlayerResponse)
   @UseMiddleware(isAuth)
-  createPlayer(
+  async createPlayer(
     @Arg("playerInput") playerInput: PlayerInput,
     @Ctx() ctx: MyContext
-  ): Promise<Player> {
-    return Player.create({ ...playerInput, teamId: ctx.req.session.teamId }).save();
+  ): Promise<PlayerResponse> {
+    const errors = validatePlayer(playerInput);
+
+    if (errors) {
+      return { errors }
+    }
+
+    let player;
+    try {
+      const result = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Player)
+        .values({
+          ...playerInput,
+          teamId: ctx.req.session.teamId
+        })
+        .returning("*")
+        .execute()
+      player = result.raw[0]
+    } catch (err) {
+      console.log(err);
+    }
+
+    return {
+      player
+    }
   }
 }

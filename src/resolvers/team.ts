@@ -6,6 +6,7 @@ import { MyContext } from "src/types";
 import { Team } from "../entities/Team";
 import { validateRegister } from "../utils/validateRegister";
 import { COOKIE_NAME } from "../constants";
+import { FieldError } from "./FieldError";
 
 @InputType()
 export class TeamInput {
@@ -19,14 +20,6 @@ export class TeamInput {
   secondaryColor: string;
   @Field()
   password: string;
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-  @Field()
-  message: string;
 }
 
 @ObjectType()

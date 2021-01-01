@@ -1,11 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, CreateDateColumn } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, Int } from "type-graphql";
 import { Team } from "./Team";
 
 @ObjectType()
 @Entity()
 export class Player extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,7 +25,7 @@ export class Player extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   age: number;
 
@@ -33,7 +33,7 @@ export class Player extends BaseEntity {
   @Column({ type: "bool", default: false, nullable: true })
   captain?: boolean;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   teamId: number;
 
