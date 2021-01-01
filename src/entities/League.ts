@@ -10,7 +10,7 @@ export class League extends BaseEntity {
   id: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Field(() => [Team])
