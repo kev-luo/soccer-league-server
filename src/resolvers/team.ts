@@ -38,7 +38,7 @@ export class TeamResolver {
     if(!ctx.req.session.teamId) {
       return null;
     }
-    return Team.findOne(ctx.req.session.teamId);
+    return Team.findOne(ctx.req.session.teamId, { relations: ["players"]});
   }
 
   @Query(() => [Team])

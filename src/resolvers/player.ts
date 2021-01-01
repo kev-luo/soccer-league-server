@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx, UseMiddleware, ObjectType } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx, UseMiddleware, ObjectType, Int } from "type-graphql";
 
 import { Player } from "../entities/Player";
 import { MyContext } from "../types";
@@ -13,7 +13,7 @@ export class PlayerInput {
   firstName: string
   @Field()
   lastName: string
-  @Field()
+  @Field(() => Int)
   age: number
   @Field({ nullable: true })
   captain: boolean

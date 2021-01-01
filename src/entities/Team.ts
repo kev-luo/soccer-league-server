@@ -36,6 +36,7 @@ export class Team extends BaseEntity {
   @Column()
   password: string;
 
+  @Field(() => [Player])
   @OneToMany(() => Player, player => player.team)
   players: Player[];
 }

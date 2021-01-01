@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, CreateDateColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, CreateDateColumn, JoinColumn } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { Team } from "./Team";
 
@@ -39,5 +39,6 @@ export class Player extends BaseEntity {
 
   @Field(() => Team)
   @ManyToOne(() => Team, team => team.players)
+  @JoinColumn()
   team: Team
 }
