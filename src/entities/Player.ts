@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, CreateDateColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import { Team } from "./Team";
 
@@ -8,6 +8,14 @@ export class Player extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Field(() => String)
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field(() => String)
+  @CreateDateColumn()
+  updatedAt: Date;
 
   @Field()
   @Column()
