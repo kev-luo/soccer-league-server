@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { Player } from "./Player";
+import { League } from "./League";
 
 @ObjectType()
 @Entity()
@@ -35,6 +36,10 @@ export class Team extends BaseEntity {
 
   @Column()
   password: string;
+
+  @Field(() => League)
+  @ManyToOne(() => League, league => league.teams)
+  league: League
 
   @Field(() => [Player])
   @OneToMany(() => Player, player => player.team)
