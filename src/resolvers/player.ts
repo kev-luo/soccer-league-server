@@ -1,7 +1,8 @@
-import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, InputType, Field, Ctx, UseMiddleware } from "type-graphql";
 
 import { Player } from "../entities/Player";
-import { MyContext } from "src/types";
+import { MyContext } from "../types";
+import { isAuth } from "../middleware/isAuth";
 
 @InputType()
 class PlayerInput {
@@ -23,6 +24,7 @@ export class PlayerResolver {
   }
 
   @Mutation(() => Player)
+  @UseMiddleware(isAuth)
   createPlayer(
     @Arg("playerInput") playerInput: PlayerInput,
     @Ctx() ctx: MyContext
