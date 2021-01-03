@@ -37,15 +37,22 @@ class UserResponse {
 export class TeamResolver {
   @Query(() => Team, { nullable: true })
   me(@Ctx() ctx: MyContext) {
-    if(!ctx.req.session.teamId) {
+    if (!ctx.req.session.teamId) {
       return null;
     }
-    return Team.findOne(ctx.req.session.teamId, { relations: ["players"]});
+    return Team.findOne(ctx.req.session.teamId, { relations: ["players"] });
   }
 
   @Query(() => [Team])
   async teams(): Promise<Team[]> {
     return Team.find();
+  }
+
+  @Query(() => Team, { nullable: true })
+  team(
+    @Arg("name") name: string
+  ): Promise<Team | undefined> {
+    return Team.findOne({ name }, { relations: ["players"] })
   }
 
   @Mutation(() => UserResponse)
@@ -112,11 +119,11 @@ export class TeamResolver {
         : { where: { name: nameOrEmail } }
     )
 
-    if(!team) {
+    if (!team) {
       return {
         errors: [
           {
-            field: "nameOrEmail", 
+            field: "nameOrEmail",
             message: "We couldn't find that team"
           }
         ]
@@ -124,7 +131,7 @@ export class TeamResolver {
     }
 
     const validatePw = await argon2.verify(team.password, password);
-    if(!validatePw) {
+    if (!validatePw) {
       return {
         errors: [
           {
@@ -134,7 +141,7 @@ export class TeamResolver {
         ]
       }
     }
-    
+
     ctx.req.session.teamId = team.id;
 
     return {
@@ -146,10 +153,10 @@ export class TeamResolver {
   logout(
     @Ctx() ctx: MyContext
   ) {
-    return new Promise((res) => 
+    return new Promise((res) =>
       ctx.req.session.destroy((err) => {
         ctx.res.clearCookie(COOKIE_NAME);
-        if(err) {
+        if (err) {
           console.log(err);
           res(false);
           return

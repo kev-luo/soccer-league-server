@@ -16,7 +16,7 @@ class LeagueResponse {
 export class LeagueResolver {
   @Query(() => [League])
   async leagues(): Promise<League[]> {
-    return League.find();
+    return League.find({ relations: ["teams"] });
   }
 
   @Query(() => League, { nullable: true })
