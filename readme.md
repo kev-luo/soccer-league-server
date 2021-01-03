@@ -1,5 +1,7 @@
 - should players be allowed to be on multiple teams?
 - stripe setup?
+- need admin setting to add leagues
+- how to set up game schedules?
 
 ## Entities
 ### League

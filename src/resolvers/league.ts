@@ -19,6 +19,13 @@ export class LeagueResolver {
     return League.find();
   }
 
+  @Query(() => League, { nullable: true })
+  async league(
+    @Arg("name") name: string
+  ): Promise<League | undefined> {
+    return League.findOne({ name }, { relations: ["teams"] });
+  }
+
   @Mutation(() => LeagueResponse)
   async createLeague(
     @Arg("name") name: string
@@ -35,8 +42,8 @@ export class LeagueResolver {
         .execute()
 
       league = result.raw[0]
-    } catch(err) {
-      if(err.code === "23505") {
+    } catch (err) {
+      if (err.code === "23505") {
         return {
           errors: [
             {

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, ObjectType, Field, Arg, InputType, Ctx } from "type-graphql";
+import { Resolver, Query, Mutation, ObjectType, Field, Arg, InputType, Ctx, Int } from "type-graphql";
 import argon2 from "argon2";
 import { getConnection } from "typeorm";
 
@@ -12,6 +12,8 @@ import { FieldError } from "./FieldError";
 export class TeamInput {
   @Field()
   name: string;
+  @Field(() => Int)
+  leagueId: number;
   @Field()
   email: string;
   @Field()
@@ -71,6 +73,7 @@ export class TeamResolver {
           email: input.email,
           primaryColor: input.primaryColor,
           secondaryColor: input.secondaryColor,
+          leagueId: input.leagueId,
           password: hashedPassword
         })
         .returning("*")
