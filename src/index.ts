@@ -12,6 +12,7 @@ import cors from "cors";
 import { League } from "./entities/League";
 import { Team } from "./entities/Team";
 import { Player } from "./entities/Player";
+import { Game } from "./entities/Game";
 import { HelloResolver } from "./resolvers/hello";
 import { LeagueResolver } from "./resolvers/league";
 import { TeamResolver } from "./resolvers/team";
@@ -26,7 +27,7 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     logging: true,
     synchronize: true,
-    entities: [League, Team, Player]
+    entities: [League, Team, Player, Game]
   })
 
   const app = express();
