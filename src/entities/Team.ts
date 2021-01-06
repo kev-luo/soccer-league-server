@@ -51,7 +51,7 @@ export class Team extends BaseEntity {
   @OneToMany(() => Player, player => player.team)
   players: Player[];
 
-  @Field(() => [Game])
+  @Field(() => [Game], { nullable: true })
   @ManyToMany(() => Game, game => game.teams)
-  games: Game[]
+  games?: Game[]
 }

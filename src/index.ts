@@ -17,6 +17,7 @@ import { HelloResolver } from "./resolvers/hello";
 import { LeagueResolver } from "./resolvers/league";
 import { TeamResolver } from "./resolvers/team";
 import { PlayerResolver } from "./resolvers/player";
+import { GameResolver } from "./resolvers/game";
 import { MyContext } from "./types";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { Stat } from "./entities/Stat";
@@ -59,7 +60,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, LeagueResolver, TeamResolver, PlayerResolver],
+      resolvers: [HelloResolver, LeagueResolver, TeamResolver, PlayerResolver, GameResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext =>({ req, res, redis })

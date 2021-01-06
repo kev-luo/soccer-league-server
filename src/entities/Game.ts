@@ -19,13 +19,13 @@ export class Game extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => String)
-  @Column()
+  @Column({ type: 'timestamp with time zone'})
   date: Date;
 
   @Field(() => [Team])
   @ManyToMany(() => Team, team => team.games)
   @JoinColumn()
-  teams: Team[]
+  teams?: Team[]
 
   @Field(() => [Stat])
   @OneToMany(() => Stat, stat => stat.game)
