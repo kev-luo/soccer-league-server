@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Stat } from "./Stat";
 import { Team } from "./Team";
 
 @ObjectType()
@@ -25,4 +26,8 @@ export class Game extends BaseEntity {
   @ManyToMany(() => Team, team => team.games)
   @JoinColumn()
   teams: Team[]
+
+  @Field(() => [Stat])
+  @OneToMany(() => Stat, stat => stat.game)
+  stats: Stat[]
 }

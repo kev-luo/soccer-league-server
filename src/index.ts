@@ -19,6 +19,7 @@ import { TeamResolver } from "./resolvers/team";
 import { PlayerResolver } from "./resolvers/player";
 import { MyContext } from "./types";
 import { COOKIE_NAME, __prod__ } from "./constants";
+import { Stat } from "./entities/Stat";
 
 const main = async () => {
 
@@ -27,7 +28,7 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     logging: true,
     synchronize: true,
-    entities: [League, Team, Player, Game]
+    entities: [League, Team, Player, Game, Stat]
   })
 
   const app = express();
